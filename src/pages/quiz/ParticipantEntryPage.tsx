@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "motion/react";
 import { Zap, Trophy } from "lucide-react";
-import { CarDecoration } from "./CarDecoration";
+import { CarDecoration } from "../../components/CarDecoration";
 import { useQuizStore } from "../../store/useQuizStore";
 
 export function ParticipantEntry() {
