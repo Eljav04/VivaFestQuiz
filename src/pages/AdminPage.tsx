@@ -11,6 +11,8 @@ import {
   BarChart3,
   Users,
   Loader2,
+  CloudOff,
+  AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../api/axios";
@@ -95,16 +97,20 @@ export function AdminPanel() {
         setEditedQuestion({ ...selected });
       }
     }
-  }, [selectedQuestion, questions]);
+  }, [selectedQuestion]); // Only re-sync when selection changes to allow real-time editing of questions without reset
 
   const handleQuestionChange = (field: keyof LocalQuestion, value: any) => {
-    setEditedQuestion({ ...editedQuestion, [field]: value });
+    const updated = { ...editedQuestion, [field]: value };
+    setEditedQuestion(updated);
+    setQuestions(questions.map(q => q.id === updated.id ? updated : q));
   };
 
   const handleOptionChange = (index: number, value: string) => {
     const newOptions = [...editedQuestion.options];
     newOptions[index] = value;
-    setEditedQuestion({ ...editedQuestion, options: newOptions });
+    const updated = { ...editedQuestion, options: newOptions };
+    setEditedQuestion(updated);
+    setQuestions(questions.map(q => q.id === updated.id ? updated : q));
   };
 
   const handleSave = async () => {
@@ -120,15 +126,19 @@ export function AdminPanel() {
         }))
       };
 
-      if (editedQuestion.id === 0) {
+      const isNew = editedQuestion.id < 0;
+
+      if (isNew) {
         // Create new
-        const res = await api.post<QuestionDto>("/api/quiz/admin/questions", dto);
-        setQuestions([...questions, {
+        const res = await api.post<QuestionDto>("/api/quiz/admin/questions", { ...dto, id: 0 });
+        const savedQuestion: LocalQuestion = {
           id: res.data.id,
           question: res.data.title,
           options: res.data.answers.map(a => a.title),
           correctAnswer: res.data.answers.findIndex(a => a.isRight)
-        }]);
+        };
+        // Replace the temporary item with the saved one
+        setQuestions(questions.map(q => q.id === editedQuestion.id ? savedQuestion : q));
         setSelectedQuestion(res.data.id);
       } else {
         // Update existing
@@ -139,7 +149,6 @@ export function AdminPanel() {
         setQuestions(updatedQuestions);
       }
       toast.success("Sual uğurla yadda saxlanıldı!");
-      fetchData(); // reload
     } catch (e) {
       console.error(e);
       toast.error("Sualı yadda saxlamaq mümkün olmadı.");
@@ -149,19 +158,20 @@ export function AdminPanel() {
   };
 
   const handleAddQuestion = () => {
+    const tempId = -Date.now(); // Negative ID for unsaved questions
     const newQuestion: LocalQuestion = {
-      id: 0, // 0 denotes unsaved new question
+      id: tempId,
       question: "Yeni Sual",
       options: ["Variant A", "Variant B", "Variant C", "Variant D"],
       correctAnswer: 0,
     };
     setQuestions([...questions, newQuestion]);
-    setSelectedQuestion(0);
+    setSelectedQuestion(tempId);
   };
 
   const handleDeleteQuestion = async (id: number) => {
-    if (id === 0) {
-      // Just local delete
+    if (id < 0) {
+      // Just local delete for unsaved questions
       const filtered = questions.filter((q) => q.id !== id);
       setQuestions(filtered);
       setSelectedQuestion(filtered[0]?.id || null);
@@ -299,7 +309,7 @@ export function AdminPanel() {
               <div className="space-y-2 max-h-[600px] overflow-y-auto">
                 {questions.map((q, index) => (
                   <motion.button
-                    key={q.id === 0 ? `new-${index}` : q.id}
+                    key={q.id}
                     onClick={() => setSelectedQuestion(q.id)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
@@ -312,15 +322,22 @@ export function AdminPanel() {
                       }
                     `}
                   >
-                    <div className="flex items-start gap-3">
-                      <span className="flex-shrink-0 w-7 h-7 bg-white/10 rounded-lg flex items-center justify-center text-white/80 text-sm font-bold">
-                        {index + 1}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm line-clamp-2">
-                          {q.question}
-                        </p>
+                    <div className="flex items-start justify-between w-full">
+                      <div className="flex items-start gap-3 flex-1">
+                        <span className="flex-shrink-0 w-7 h-7 bg-white/10 rounded-lg flex items-center justify-center text-white/80 text-sm font-bold">
+                          {index + 1}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm line-clamp-2">
+                            {q.question}
+                          </p>
+                        </div>
                       </div>
+                      {q.id < 0 && (
+                        <div className="flex-shrink-0 ml-2" title="Unsaved changes">
+                          <AlertCircle className="w-4 h-4 text-orange-400" />
+                        </div>
+                      )}
                     </div>
                   </motion.button>
                 ))}
