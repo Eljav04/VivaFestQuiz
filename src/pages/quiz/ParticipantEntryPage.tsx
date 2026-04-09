@@ -82,7 +82,7 @@ export function ParticipantEntry() {
             VIVA FEST
           </h1>
           <p className="text-xl text-[#66b3ff] mb-2">2026</p>
-          <p className="text-white/80">BMW Automotive Quiz Challenge</p>
+          <p className="text-white/80">BMW Avtomobil Viktorinası</p>
         </motion.div>
 
         {/* Entry Card */}
@@ -95,14 +95,14 @@ export function ParticipantEntry() {
           <form onSubmit={handleJoin} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-white/90 mb-3 text-lg">
-                Enter Your Name
+                Adınızı daxil edin
               </label>
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name here..."
+                placeholder="Adınız buraya..."
                 className="w-full px-6 py-4 glass rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0066b2] transition-all duration-300"
                 required
               />
@@ -115,17 +115,17 @@ export function ParticipantEntry() {
               className="w-full py-5 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-[#0066b2]/50 transition-all duration-300 flex items-center justify-center gap-3"
             >
               <Trophy className="w-5 h-5" />
-              Join Quiz
+              Viktorinaya Qoşul
             </motion.button>
           </form>
 
           <div className="mt-6 pt-6 border-t border-white/10">
             <div className="flex items-center justify-between text-sm text-white/60">
-              <span>15 Questions</span>
+              <span>15 Sual</span>
               <span className="w-1 h-1 bg-white/60 rounded-full" />
-              <span>30s per question</span>
+              <span>Hər sual üçün 30 saniyə</span>
               <span className="w-1 h-1 bg-white/60 rounded-full" />
-              <span>Live Leaderboard</span>
+              <span>Canlı Liderlər lövhəsi</span>
             </div>
           </div>
         </motion.div>
@@ -137,7 +137,7 @@ export function ParticipantEntry() {
           transition={{ delay: 0.8, duration: 0.6 }}
           className="text-center mt-6 text-white/50 text-sm"
         >
-          Powered by VIVA Autoservice • BMW Club
+          VIVA Autoservis • BMW Klubu tərəfindən təmin edilib
         </motion.div>
       </motion.div>
     </div>

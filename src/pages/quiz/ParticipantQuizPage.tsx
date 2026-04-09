@@ -89,7 +89,7 @@ export function ParticipantQuiz() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a1628]">
-        <div className="text-white text-2xl">Loading Questions...</div>
+        <div className="text-white text-2xl">Suallar yüklənir...</div>
       </div>
     );
   }
@@ -97,8 +97,8 @@ export function ParticipantQuiz() {
   if (questions.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a1628] gap-4">
-        <div className="text-white text-2xl">No questions available.</div>
-        <button className="px-6 py-2 bg-[#0066b2] rounded-xl text-white" onClick={() => navigate("/")}>Go Back</button>
+        <div className="text-white text-2xl">Heç bir sual yoxdur.</div>
+        <button className="px-6 py-2 bg-[#0066b2] rounded-xl text-white" onClick={() => navigate("/")}>Geri qayıt</button>
       </div>
     );
   }
@@ -128,7 +128,7 @@ export function ParticipantQuiz() {
             animate={{ opacity: 1, x: 0 }}
             className="glass px-6 py-3 rounded-2xl"
           >
-            <span className="text-white/80 text-sm mr-2">Question</span>
+            <span className="text-white/80 text-sm mr-2">Sual</span>
             <span className="text-white font-bold text-lg">
               {currentQuestion + 1}/{totalQuestions}
             </span>
@@ -226,7 +226,7 @@ export function ParticipantQuiz() {
                  onClick={handleNext}
                  className="glass-strong rounded-2xl py-5 px-8 text-white font-semibold text-lg flex items-center justify-center gap-3 hover:bg-white/20 transition-all duration-300"
                >
-                 {currentQuestion < questions.length - 1 ? "Next Question" : "Finish Quiz"}
+                 {currentQuestion < questions.length - 1 ? "Növbəti Sual" : "Viktorinanı Bitir"}
                  <ChevronRight className="w-5 h-5" />
                </motion.button>
             )}

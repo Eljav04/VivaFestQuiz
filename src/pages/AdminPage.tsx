@@ -37,7 +37,7 @@ export function AdminPanel() {
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [editedQuestion, setEditedQuestion] = useState<LocalQuestion>({
     id: 0,
-    question: "New Question",
+    question: "Yeni Sual",
     options: ["", "", "", ""],
     correctAnswer: 0,
   });
@@ -132,19 +132,19 @@ export function AdminPanel() {
         );
         setQuestions(updatedQuestions);
       }
-      alert("Question saved successfully!");
+      alert("Sual uğurla yadda saxlanıldı!");
       fetchData(); // reload
     } catch (e) {
       console.error(e);
-      alert("Failed to save question.");
+      alert("Sualı yadda saxlamaq mümkün olmadı.");
     }
   };
 
   const handleAddQuestion = () => {
     const newQuestion: LocalQuestion = {
       id: 0, // 0 denotes unsaved new question
-      question: "New Question",
-      options: ["Option A", "Option B", "Option C", "Option D"],
+      question: "Yeni Sual",
+      options: ["Variant A", "Variant B", "Variant C", "Variant D"],
       correctAnswer: 0,
     };
     setQuestions([...questions, newQuestion]);
@@ -160,7 +160,7 @@ export function AdminPanel() {
       return;
     }
     
-    if (confirm("Are you sure you want to delete this question?")) {
+    if (confirm("Bu sualı silmək istədiyinizə əminsiniz?")) {
       try {
         await api.delete(`/api/quiz/admin/questions/${id}`);
         const filtered = questions.filter((q) => q.id !== id);
@@ -170,7 +170,7 @@ export function AdminPanel() {
         }
       } catch (e) {
         console.error(e);
-        alert("Failed to delete question.");
+        alert("Sualı silmək mümkün olmadı.");
       }
     }
   };
@@ -179,10 +179,10 @@ export function AdminPanel() {
     try {
       await api.delete("/api/quiz/admin/results/reset");
       setStats({ participants: 0, avgScore: 0 });
-      alert("Leaderboard cleared successfully!");
+      alert("Liderlər lövhəsi uğurla təmizləndi!");
     } catch (e) {
       console.error(e);
-      alert("Failed to clear leaderboard.");
+      alert("Liderlər lövhəsini təmizləmək mümkün olmadı.");
     }
   };
 
@@ -201,8 +201,8 @@ export function AdminPanel() {
                 <Settings className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white">Admin Panel</h1>
-                <p className="text-white/60">VIVA FEST 2026 Quiz Management</p>
+                <h1 className="text-3xl font-bold text-white">Admin Paneli</h1>
+                <p className="text-white/60">VIVA FEST 2026 Viktorina İdarəetməsi</p>
               </div>
             </div>
 
@@ -213,7 +213,7 @@ export function AdminPanel() {
                 className="glass px-6 py-3 rounded-xl text-white hover:bg-white/10 transition-all flex items-center gap-2"
               >
                 <Eye className="w-5 h-5" />
-                View Leaderboard
+                Liderlər lövhəsinə bax
               </a>
             </div>
           </div>
@@ -229,7 +229,7 @@ export function AdminPanel() {
           <div className="glass-strong rounded-2xl p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-white/60 text-sm mb-1">Total Questions</div>
+                <div className="text-white/60 text-sm mb-1">Ümumi Suallar</div>
                 <div className="text-4xl font-bold text-white">{questions.length}</div>
               </div>
               <div className="w-14 h-14 bg-[#0066b2]/20 rounded-xl flex items-center justify-center">
@@ -241,7 +241,7 @@ export function AdminPanel() {
           <div className="glass-strong rounded-2xl p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-white/60 text-sm mb-1">Participants</div>
+                <div className="text-white/60 text-sm mb-1">İştirakçılar</div>
                 <div className="text-4xl font-bold text-white">{stats.participants}</div>
               </div>
               <div className="w-14 h-14 bg-[#1c8cdc]/20 rounded-xl flex items-center justify-center">
@@ -253,7 +253,7 @@ export function AdminPanel() {
           <div className="glass-strong rounded-2xl p-6">
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-white/60 text-sm mb-1">Average Score</div>
+                <div className="text-white/60 text-sm mb-1">Ortalama Bal</div>
                 <div className="text-4xl font-bold text-white">{stats.avgScore}</div>
               </div>
               <div className="w-14 h-14 bg-[#66b3ff]/20 rounded-xl flex items-center justify-center">
@@ -274,7 +274,7 @@ export function AdminPanel() {
           <div className="lg:col-span-1">
             <div className="glass-strong rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-white">Questions</h2>
+                <h2 className="text-xl font-bold text-white">Suallar</h2>
                 <button
                   onClick={handleAddQuestion}
                   className="p-2 bg-[#0066b2] hover:bg-[#1c8cdc] rounded-xl transition-all"
@@ -319,7 +319,7 @@ export function AdminPanel() {
           <div className="lg:col-span-2">
             <div className="glass-strong rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-white">Edit Question</h2>
+                <h2 className="text-xl font-bold text-white">Sualı Redaktə Et</h2>
                 <button
                   onClick={() => handleDeleteQuestion(editedQuestion.id)}
                   className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-red-400"
@@ -332,7 +332,7 @@ export function AdminPanel() {
                 {/* Question Text */}
                 <div>
                   <label className="block text-white/80 mb-2 text-sm">
-                    Question Text
+                    Sualın Mətni
                   </label>
                   <textarea
                     value={editedQuestion.question}
@@ -341,14 +341,14 @@ export function AdminPanel() {
                     }
                     className="w-full px-4 py-3 glass rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0066b2] transition-all resize-none"
                     rows={3}
-                    placeholder="Enter your question..."
+                    placeholder="Sualınızı daxil edin..."
                   />
                 </div>
 
                 {/* Answer Options */}
                 <div>
                   <label className="block text-white/80 mb-3 text-sm">
-                    Answer Options
+                    Cavab Seçimləri
                   </label>
                   <div className="space-y-3">
                     {editedQuestion.options.map((option, index) => (
@@ -376,14 +376,14 @@ export function AdminPanel() {
                               handleOptionChange(index, e.target.value)
                             }
                             className="flex-1 px-4 py-3 glass rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0066b2] transition-all"
-                            placeholder={`Option ${index + 1}`}
+                            placeholder={`Variant ${index + 1}`}
                           />
                         </div>
                       </div>
                     ))}
                   </div>
                   <p className="text-white/50 text-xs mt-2">
-                    Click the circle icon to mark the correct answer
+                    Düzgün cavabı qeyd etmək üçün dairə ikonuna klikləyin
                   </p>
                 </div>
 
@@ -395,7 +395,7 @@ export function AdminPanel() {
                   className="w-full py-4 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all"
                 >
                   <Save className="w-5 h-5" />
-                  Save Changes
+                  Dəyişiklikləri Yadda Saxla
                 </motion.button>
 
                 {/* Clear Leaderboard WITH ALERT DIALOG */}
@@ -403,20 +403,19 @@ export function AdminPanel() {
                   <AlertDialogTrigger asChild>
                     <button className="w-full py-3 glass hover:bg-red-500/20 text-red-400 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border border-red-500/20">
                       <Trash2 className="w-5 h-5" />
-                      Reset Leaderboard
+                      Liderlər lövhəsini sıfırla
                     </button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogTitle>Tamamilə əminsiniz?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your
-                        leaderboard state and remove all participant rankings from servers.
+                        Bu hərəkət geri qaytarıla bilməz. Bu, liderlər lövhəsinin vəziyyətini qalıcı olaraq siləcək və bütün iştirakçı reytinqlərini serverlərdən təmizləyəcək.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleClearLeaderboard}>Continue</AlertDialogAction>
+                      <AlertDialogCancel>İmtina et</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleClearLeaderboard}>Davam et</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>

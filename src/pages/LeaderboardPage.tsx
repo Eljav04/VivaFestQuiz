@@ -128,7 +128,7 @@ export function Leaderboard() {
                 <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-[#66b3ff] to-white bg-clip-text text-transparent mb-2">
                   VIVA FEST
                 </h1>
-                <p className="text-3xl text-[#66b3ff]">2026 - Live Leaderboard</p>
+                <p className="text-3xl text-[#66b3ff]">2026 - Canlı Liderlər lövhəsi</p>
               </div>
             </div>
 
@@ -137,7 +137,7 @@ export function Leaderboard() {
               <div className="glass-strong px-6 py-4 rounded-2xl flex items-center gap-3">
                 <Clock className="w-6 h-6 text-[#66b3ff]" />
                 <div className="text-right">
-                  <div className="text-white/60 text-sm">Current Time</div>
+                  <div className="text-white/60 text-sm">Cari vaxt</div>
                   <div className="text-white font-bold text-xl">
                     {currentTime.toLocaleTimeString()}
                   </div>
@@ -146,7 +146,7 @@ export function Leaderboard() {
               <div className="glass-strong px-6 py-4 rounded-2xl flex items-center gap-3">
                 <Users className="w-6 h-6 text-[#66b3ff]" />
                 <div className="text-right">
-                  <div className="text-white/60 text-sm">Participants</div>
+                  <div className="text-white/60 text-sm">İştirakçılar</div>
                   <div className="text-white font-bold text-xl">
                     {leaderboard.length}
                   </div>
@@ -163,7 +163,7 @@ export function Leaderboard() {
               className="w-4 h-4 bg-green-400 rounded-full"
             />
             <span className="text-green-400 font-semibold text-xl uppercase tracking-wider">
-              Live Updates
+              Canlı Yenilənmə
             </span>
           </div>
         </motion.div>
@@ -192,7 +192,7 @@ export function Leaderboard() {
                 <div className="text-4xl font-bold bg-gradient-to-r from-gray-300 to-gray-400 bg-clip-text text-transparent">
                   {leaderboard[1].points}
                 </div>
-                <div className="text-white/60 text-sm mt-2">points</div>
+                <div className="text-white/60 text-sm mt-2">bal</div>
               </div>
             </motion.div>
 
@@ -216,14 +216,14 @@ export function Leaderboard() {
                 <div className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
                   {leaderboard[0].points}
                 </div>
-                <div className="text-white/60 mt-2">points</div>
+                <div className="text-white/60 mt-2">bal</div>
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="mt-4 px-4 py-2 bg-yellow-400/20 rounded-full text-yellow-400 font-semibold"
                 >
                   <Zap className="w-4 h-4 inline mr-1" />
-                  Champion
+                  Çempion
                 </motion.div>
               </div>
             </motion.div>
@@ -244,7 +244,7 @@ export function Leaderboard() {
                 <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
                   {leaderboard[2].points}
                 </div>
-                <div className="text-white/60 text-sm mt-2">points</div>
+                <div className="text-white/60 text-sm mt-2">bal</div>
               </div>
             </motion.div>
           </motion.div>
@@ -259,7 +259,7 @@ export function Leaderboard() {
         >
           <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
             <Trophy className="w-8 h-8 text-[#0066b2]" />
-            Complete Rankings
+            Tam Reytinq
           </h2>
 
           <div className="space-y-3">
@@ -297,7 +297,7 @@ export function Leaderboard() {
                   <div className="text-4xl font-bold bg-gradient-to-r from-[#0066b2] to-[#66b3ff] bg-clip-text text-transparent">
                     {entry.points}
                   </div>
-                  <div className="text-white/60 text-sm">points</div>
+                  <div className="text-white/60 text-sm">bal</div>
                 </div>
               </motion.div>
             ))}
@@ -305,8 +305,8 @@ export function Leaderboard() {
             {leaderboard.length === 0 && (
               <div className="text-center py-12 text-white/60">
                 <Users className="w-16 h-16 mx-auto mb-4 opacity-40" />
-                <p className="text-2xl">No participants yet</p>
-                <p className="text-lg mt-2">Leaderboard will update in real-time</p>
+                <p className="text-2xl">Hələ iştirakçı yoxdur</p>
+                <p className="text-lg mt-2">Liderlər lövhəsi real vaxt rejimində yenilənəcək</p>
               </div>
             )}
           </div>

@@ -56,10 +56,10 @@ export function ParticipantResults() {
 
   const getPerformanceLevel = () => {
     const s = score || 0;
-    if (s >= 1200) return { text: "Outstanding!", color: "from-yellow-400 to-orange-500", icon: Trophy };
-    if (s >= 900) return { text: "Excellent!", color: "from-blue-400 to-cyan-500", icon: Award };
-    if (s >= 600) return { text: "Good Job!", color: "from-green-400 to-emerald-500", icon: Star };
-    return { text: "Keep Trying!", color: "from-gray-400 to-gray-500", icon: Star };
+    if (s >= 1200) return { text: "Möhtəşəm!", color: "from-yellow-400 to-orange-500", icon: Trophy };
+    if (s >= 900) return { text: "Əla!", color: "from-blue-400 to-cyan-500", icon: Award };
+    if (s >= 600) return { text: "Afərin!", color: "from-green-400 to-emerald-500", icon: Star };
+    return { text: "Yenə cəhd et!", color: "from-gray-400 to-gray-500", icon: Star };
   };
 
   const performance = getPerformanceLevel();
@@ -119,13 +119,13 @@ export function ParticipantResults() {
             className="glass rounded-3xl p-8 mb-6"
           >
             <div className="text-white/60 text-sm uppercase tracking-wider mb-2">
-              Your Score
+              Sizin Xalınız
             </div>
             <div className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#0066b2] to-[#66b3ff] bg-clip-text text-transparent">
               {score !== null ? score : '...'}
             </div>
             <div className="text-white/60 text-sm mt-2">
-              out of 1500 points
+              1500 baldan
             </div>
           </motion.div>
 
@@ -136,11 +136,11 @@ export function ParticipantResults() {
             className="grid grid-cols-2 gap-4 mb-8"
           >
             <div className="glass rounded-2xl p-4">
-              <div className="text-white/60 text-sm mb-1">Rank</div>
+              <div className="text-white/60 text-sm mb-1">Sıra</div>
               <div className="text-2xl font-bold text-white">{rank !== null && rank > 0 ? `#${rank}` : '...'}</div>
             </div>
             <div className="glass rounded-2xl p-4">
-              <div className="text-white/60 text-sm mb-1">Questions</div>
+              <div className="text-white/60 text-sm mb-1">Suallar</div>
               <div className="text-2xl font-bold text-white">15</div>
             </div>
           </motion.div>
@@ -152,7 +152,7 @@ export function ParticipantResults() {
             className="space-y-4"
           >
             <div className="flex items-center justify-center gap-3 text-white/80">
-              <span>Redirecting to leaderboard in</span>
+              <span>Liderlər lövhəsinə yönləndirilir:</span>
               <span className="inline-flex items-center justify-center w-10 h-10 glass-strong rounded-xl text-[#0066b2] font-bold">
                 {countdown}
               </span>
@@ -164,7 +164,7 @@ export function ParticipantResults() {
               whileTap={{ scale: 0.98 }}
               className="w-full py-4 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-300"
             >
-              View Leaderboard Now
+              Liderlər lövhəsinə bax
               <ArrowRight className="w-5 h-5" />
             </motion.button>
           </motion.div>

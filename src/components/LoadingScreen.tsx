@@ -54,7 +54,7 @@ export function LoadingScreen() {
           transition={{ delay: 0.4 }}
           className="text-white/60 mt-2"
         >
-          Loading quiz...
+          Viktorina yüklənir...
         </motion.p>
       </motion.div>
     </div>

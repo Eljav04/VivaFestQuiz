@@ -5,9 +5,9 @@ export function Navigation() {
   const location = useLocation();
   
   const links = [
-    { path: "/", icon: Home, label: "Entry" },
-    { path: "/quiz", icon: PlayCircle, label: "Quiz" },
-    { path: "/leaderboard", icon: Trophy, label: "Leaderboard" },
+    { path: "/", icon: Home, label: "Giriş" },
+    { path: "/quiz", icon: PlayCircle, label: "Viktorina" },
+    { path: "/leaderboard", icon: Trophy, label: "Liderlər" },
     { path: "/admin", icon: Settings, label: "Admin" },
   ];
 
