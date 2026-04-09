@@ -113,6 +113,30 @@ export function AdminPanel() {
     setQuestions(questions.map(q => q.id === updated.id ? updated : q));
   };
 
+  const handleDeleteOption = (index: number) => {
+    if (editedQuestion.options.length <= 1) {
+      toast.error("Ən azı bir variant olmalıdır.");
+      return;
+    }
+    const newOptions = editedQuestion.options.filter((_, i) => i !== index);
+    let newCorrectAnswer = editedQuestion.correctAnswer;
+    if (index === editedQuestion.correctAnswer) {
+      newCorrectAnswer = 0;
+    } else if (index < editedQuestion.correctAnswer) {
+      newCorrectAnswer--;
+    }
+    const updated = { ...editedQuestion, options: newOptions, correctAnswer: newCorrectAnswer };
+    setEditedQuestion(updated);
+    setQuestions(questions.map(q => q.id === updated.id ? updated : q));
+  };
+
+  const handleAddOption = () => {
+    const newOptions = [...editedQuestion.options, ""];
+    const updated = { ...editedQuestion, options: newOptions };
+    setEditedQuestion(updated);
+    setQuestions(questions.map(q => q.id === updated.id ? updated : q));
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -340,8 +364,7 @@ export function AdminPanel() {
                   <motion.button
                     key={q.id}
                     onClick={() => setSelectedQuestion(q.id)}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+
                     className={`
                       w-full text-left p-4 rounded-xl transition-all
                       ${selectedQuestion === q.id
@@ -430,7 +453,7 @@ export function AdminPanel() {
                   </label>
                   <div className="space-y-3">
                     {editedQuestion.options.map((option, index) => (
-                      <div key={index} className="flex items-center gap-3">
+                      <div key={index} className="flex items-center gap-3 group">
                         <button
                           onClick={() =>
                             handleQuestionChange("correctAnswer", index)
@@ -456,9 +479,22 @@ export function AdminPanel() {
                             className="flex-1 px-4 py-3 glass rounded-xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0066b2] transition-all"
                             placeholder={`Variant ${index + 1}`}
                           />
+                          <button
+                            onClick={() => handleDeleteOption(index)}
+                            className="p-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl transition-all flex-shrink-0"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
                     ))}
+                    <button
+                      onClick={handleAddOption}
+                      className="w-full py-3 glass-hover border border-dashed border-white/20 rounded-xl text-white/60 hover:text-white hover:border-white/40 transition-all flex items-center justify-center gap-2"
+                    >
+                      <Plus className="w-5 h-5" />
+                      Variant əlavə et
+                    </button>
                   </div>
                   <p className="text-white/50 text-xs mt-2">
                     Düzgün cavabı qeyd etmək üçün dairə ikonuna klikləyin
