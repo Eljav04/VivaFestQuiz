@@ -190,147 +190,142 @@ export function Leaderboard() {
         </motion.div>
 
         {/* Top 3 Podium */}
-        {leaderboard.length >= 3 && (
+        {leaderboard.length > 0 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex items-end justify-center gap-10 mb-10 mt-12 max-w-6xl mx-auto"
+            className="flex items-end justify-center gap-10 mb-16 mt-12 max-w-6xl mx-auto"
           >
             {/* Second Place - Left */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="flex-1 max-w-xs"
-            >
-              <div className="glass-strong border-2 border-gray-400/50 rounded-3xl p-8 pt-10 text-center h-80 flex flex-col items-center relative bg-slate-900/40">
-                {/* Rank Circle Overlay */}
-                <div className="absolute -top-9 left-1/2 -translate-x-1/2 w-18 h-18 rounded-full bg-[#b8b8b8] border-4 border-[#1e293b] flex items-center justify-center text-slate-900 text-2xl font-bold shadow-lg">
-                  2
-                </div>
-
-                {/* Fastest Time Badge */}
-                {isFastestPlayer(leaderboard[1].id) && (
-                  <div className="absolute top-2 right-2 bg-green-500/20 border border-green-500 rounded-full px-2 py-0.5 flex items-center gap-1 shadow-[0_0_10px_rgba(34,197,94,0.3)]">
-                    <Zap className="w-3 h-3 text-green-400" />
-                    <span className="text-green-400 text-[10px] font-semibold">Sürətli</span>
+            {leaderboard[1] && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex-1 max-w-xs"
+              >
+                <div className="glass-strong border-2 border-gray-400/50 rounded-3xl p-8 pt-10 text-center h-80 flex flex-col items-center relative bg-slate-900/40">
+                  {/* Rank Circle Overlay */}
+                  <div className="absolute -top-9 left-1/2 -translate-x-1/2 w-18 h-18 rounded-full bg-[#b8b8b8] border-4 border-[#1e293b] flex items-center justify-center text-slate-900 text-2xl font-bold shadow-lg">
+                    2
                   </div>
-                )}
 
-                {/* Avatar / Icon Circle */}
-                <div className="w-24 h-24 rounded-full border-4 border-gray-400/60 p-1 mb-4 flex items-center justify-center bg-gray-400/10">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center overflow-hidden">
-                    <Medal className="w-12 h-12 text-white/90" />
+                  {/* Fastest Time Badge */}
+                  {isFastestPlayer(leaderboard[1].id) && (
+                    <div className="absolute top-2 right-2 bg-green-500/20 border border-green-500 rounded-full px-2 py-0.5 flex items-center gap-1 shadow-[0_0_10px_rgba(34,197,94,0.3)]">
+                      <Zap className="w-3 h-3 text-green-400" />
+                      <span className="text-green-400 text-[10px] font-semibold">Ən sürətli vaxt</span>
+                    </div>
+                  )}
+
+                  {/* Avatar / Icon Circle */}
+                  <div className="w-24 h-24 rounded-full border-4 border-gray-400/60 p-1 mb-4 flex items-center justify-center bg-gray-400/10">
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center overflow-hidden">
+                      <Medal className="w-12 h-12 text-white/90" />
+                    </div>
+                  </div>
+
+                  <div className="text-2xl font-bold text-white mb-1 truncate w-full px-2">
+                    {leaderboard[1].name}
+                  </div>
+
+                  <div className="mt-auto">
+                    <div className="text-4xl font-bold bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
+                      {leaderboard[1].points.toLocaleString()}
+                    </div>
+                    <div className="text-white/40 text-xs font-bold tracking-tighter">XAL</div>
                   </div>
                 </div>
-
-                <div className="text-2xl font-bold text-white mb-1 truncate w-full px-2">
-                  {leaderboard[1].name}
-                </div>
-
-                <div className="mt-auto">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text text-transparent">
-                    {leaderboard[1].points.toLocaleString()}
-                  </div>
-                  <div className="text-white/40 text-xs font-bold tracking-tighter">XAL</div>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
 
             {/* First Place - Center */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex-1 max-w-sm scale-100"
-            >
-              <div className="glass-strong border-2 border-yellow-400/50 rounded-3xl p-8 pt-12 text-center h-96 flex flex-col items-center relative bg-slate-900/60 shadow-[0_0_30px_rgba(250,204,21,0.15)]">
-                {/* Rank Circle Overlay */}
-                <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-[#ffcc00] border-4 border-[#1e293b] flex items-center justify-center text-slate-900 text-3xl font-black shadow-xl">
-                  1
-                </div>
-
-                {/* Fastest Time Badge */}
-                {isFastestPlayer(leaderboard[0].id) && (
-                  <div className="absolute top-4 right-4 bg-green-500/20 border border-green-500 rounded-full px-3 py-1 flex items-center gap-1 shadow-[0_0_15px_rgba(34,197,94,0.4)] z-20">
-                    <Zap className="w-4 h-4 text-green-400" />
-                    <span className="text-green-400 text-xs font-semibold">Ən sürətli vaxt</span>
+            {leaderboard[0] && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="flex-1 max-w-sm scale-110"
+              >
+                <div className="glass-strong border-2 border-yellow-400/50 rounded-3xl p-8 pt-12 text-center h-96 flex flex-col items-center relative bg-slate-900/60 shadow-[0_0_30px_rgba(250,204,21,0.15)]">
+                  {/* Rank Circle Overlay */}
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-[#ffcc00] border-4 border-[#1e293b] flex items-center justify-center text-slate-900 text-3xl font-black shadow-xl">
+                    1
                   </div>
-                )}
 
-                {/* Avatar / Icon Circle */}
-                <div className="w-32 h-32 rounded-full border-4 border-yellow-400/80 p-1.5 mb-6 flex items-center justify-center bg-yellow-400/10 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center overflow-hidden">
-                    <Trophy className="w-16 h-16 text-white/90" />
+                  {/* Fastest Time Badge */}
+                  {isFastestPlayer(leaderboard[0].id) && (
+                    <div className="absolute top-4 right-4 bg-green-500/20 border border-green-500 rounded-full px-3 py-1 flex items-center gap-1 shadow-[0_0_15px_rgba(34,197,94,0.4)] z-20">
+                      <Zap className="w-4 h-4 text-green-400" />
+                      <span className="text-green-400 text-xs font-semibold">Ən sürətli vaxt</span>
+                    </div>
+                  )}
+
+                  {/* Avatar / Icon Circle */}
+                  <div className="w-32 h-32 rounded-full border-4 border-yellow-400/80 p-1.5 mb-6 flex items-center justify-center bg-yellow-400/10 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center overflow-hidden">
+                      <Trophy className="w-16 h-16 text-white/90" />
+                    </div>
+                  </div>
+
+                  <div className="text-3xl font-bold text-white mb-2 truncate w-full px-2">
+                    {leaderboard[0].name}
+                  </div>
+
+                  <div className="mt-auto">
+                    <div className="text-6xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                      {leaderboard[0].points.toLocaleString()}
+                    </div>
+                    <div className="text-white/40 text-sm font-bold tracking-tighter">XAL</div>
                   </div>
                 </div>
-
-                <div className="text-3xl font-bold text-white mb-2 truncate w-full px-2">
-                  {leaderboard[0].name}
-                </div>
-
-                <div className="mt-auto">
-                  <div className="text-6xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                    {leaderboard[0].points.toLocaleString()}
-                  </div>
-                  <div className="text-white/40 text-sm font-bold tracking-tighter">XAL</div>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
 
             {/* Third Place - Right */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="flex-1 max-w-xs"
-            >
-              <div className="glass-strong border-2 border-orange-600/50 rounded-3xl p-8 pt-10 text-center h-72 flex flex-col items-center relative bg-slate-900/40">
-                {/* Rank Circle Overlay */}
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-[#cd7f32] border-4 border-[#1e293b] flex items-center justify-center text-slate-900 text-2xl font-bold shadow-lg">
-                  3
-                </div>
-
-                {/* Fastest Time Badge */}
-                {isFastestPlayer(leaderboard[2].id) && (
-                  <div className="absolute top-2 right-2 bg-green-500/20 border border-green-500 rounded-full px-2 py-0.5 flex items-center gap-1 shadow-[0_0_10px_rgba(34,197,94,0.3)]">
-                    <Zap className="w-3 h-3 text-green-400" />
-                    <span className="text-green-400 text-[10px] font-semibold">Sürətli</span>
+            {leaderboard[2] && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex-1 max-w-xs"
+              >
+                <div className="glass-strong border-2 border-orange-600/50 rounded-3xl p-8 pt-10 text-center h-72 flex flex-col items-center relative bg-slate-900/40">
+                  {/* Rank Circle Overlay */}
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-[#cd7f32] border-4 border-[#1e293b] flex items-center justify-center text-slate-900 text-2xl font-bold shadow-lg">
+                    3
                   </div>
-                )}
 
-                {/* Avatar / Icon Circle */}
-                <div className="w-20 h-20 rounded-full border-4 border-orange-600/60 p-1 mb-2 flex items-center justify-center bg-orange-600/10">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-orange-400 to-orange-700 flex items-center justify-center overflow-hidden">
-                    <Medal className="w-10 h-10 text-white/90" />
+                  {/* Fastest Time Badge */}
+                  {isFastestPlayer(leaderboard[2].id) && (
+                    <div className="absolute top-2 right-2 bg-green-500/20 border border-green-500 rounded-full px-2 py-0.5 flex items-center gap-1 shadow-[0_0_10px_rgba(34,197,94,0.3)]">
+                      <Zap className="w-3 h-3 text-green-400" />
+                      <span className="text-green-400 text-[10px] font-semibold">Ən sürətli vaxt</span>
+                    </div>
+                  )}
+
+                  {/* Avatar / Icon Circle */}
+                  <div className="w-20 h-20 rounded-full border-4 border-orange-600/60 p-1 mb-2 flex items-center justify-center bg-orange-600/10">
+                    <div className="w-full h-full rounded-full bg-gradient-to-br from-orange-400 to-orange-700 flex items-center justify-center overflow-hidden">
+                      <Medal className="w-10 h-10 text-white/90" />
+                    </div>
+                  </div>
+
+                  <div className="text-2xl font-bold text-white mb-1 truncate w-full px-2">
+                    {leaderboard[2].name}
+                  </div>
+
+                  <div className="mt-auto">
+                    <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+                      {leaderboard[2].points.toLocaleString()}
+                    </div>
+                    <div className="text-white/40 text-xs font-bold tracking-tighter">XAL</div>
                   </div>
                 </div>
-
-                <div className="text-2xl font-bold text-white mb-1 truncate w-full px-2">
-                  {leaderboard[2].name}
-                </div>
-
-                <div className="mt-auto">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-                    {leaderboard[2].points.toLocaleString()}
-                  </div>
-                  <div className="text-white/40 text-xs font-bold tracking-tighter">XAL</div>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            )}
           </motion.div>
-        )}
-
-        {/* Not enough players for podium */}
-        {leaderboard.length > 0 && leaderboard.length < 3 && (
-          <div className="flex justify-center mb-16 max-w-6xl mx-auto">
-            <div className="glass-strong rounded-3xl p-12 text-center w-full">
-              <Trophy className="w-20 h-20 mx-auto mb-6 text-yellow-400 opacity-60" />
-              <p className="text-3xl text-white mb-2">Daha çox iştirakçı gözlənilir...</p>
-              <p className="text-xl text-white/60">Kürsü 3+ iştirakçı olduqda görünəcək</p>
-            </div>
-          </div>
         )}
 
         {/* Complete Rankings */}
