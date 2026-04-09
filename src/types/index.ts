@@ -36,5 +36,8 @@ export interface QuizResultDto {
   id: number;
   name: string;
   points: number;
-  completeTime: string;
+  rightAnswersCount: number;
+  wrongAnswersCount: number;
+  totalRemainingSeconds: number;
+  creationTime: string;
 }

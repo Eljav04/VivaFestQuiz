@@ -11,7 +11,8 @@ export function ParticipantResults() {
   const { participantName } = useQuizStore();
   const [score, setScore] = useState<number | null>(null);
   const [rank, setRank] = useState<number | null>(null);
-  const [countdown, setCountdown] = useState(5);
+  const [result, setResult] = useState<QuizResultDto | null>(null);
+  const [countdown, setCountdown] = useState(30);
 
   useEffect(() => {
     if (!participantName) {
@@ -26,7 +27,9 @@ export function ParticipantResults() {
         const sorted = res.data.sort((a, b) => b.points - a.points);
         const index = sorted.findIndex(r => r.name === participantName);
         if (index !== -1) {
-          setScore(sorted[index].points);
+          const userResult = sorted[index];
+          setResult(userResult);
+          setScore(userResult.points);
           setRank(index + 1);
         } else {
           setScore(0);
@@ -59,7 +62,7 @@ export function ParticipantResults() {
     if (s >= 1200) return { text: "Möhtəşəm!", color: "from-yellow-400 to-orange-500", icon: Trophy };
     if (s >= 900) return { text: "Əla!", color: "from-blue-400 to-cyan-500", icon: Award };
     if (s >= 600) return { text: "Afərin!", color: "from-green-400 to-emerald-500", icon: Star };
-    return { text: "Yenə cəhd et!", color: "from-gray-400 to-gray-500", icon: Star };
+    return { text: "Finiş!", color: "from-gray-400 to-blue-500", icon: Star };
   };
 
   const performance = getPerformanceLevel();
@@ -68,11 +71,9 @@ export function ParticipantResults() {
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
       {/* Background */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1632417908031-15aeb96efd57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyYWNpbmclMjB3aGVlbCUyMEJNV3xlbnwxfHx8fDE3NzU2NTkxMTF8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
-        }}
+
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628]/95 via-[#0a1628]/90 to-[#0066b2]/85" />
       </div>
@@ -124,24 +125,35 @@ export function ParticipantResults() {
             <div className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#0066b2] to-[#66b3ff] bg-clip-text text-transparent">
               {score !== null ? score : '...'}
             </div>
-            <div className="text-white/60 text-sm mt-2">
-              1500 baldan
-            </div>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="grid grid-cols-2 gap-4 mb-8"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
           >
             <div className="glass rounded-2xl p-4">
-              <div className="text-white/60 text-sm mb-1">Sıra</div>
-              <div className="text-2xl font-bold text-white">{rank !== null && rank > 0 ? `#${rank}` : '...'}</div>
+              <div className="text-white/60 text-xs mb-1">Yer</div>
+              <div className="text-xl font-bold text-white">{rank !== null && rank > 0 ? `#${rank}` : '...'}</div>
             </div>
             <div className="glass rounded-2xl p-4">
-              <div className="text-white/60 text-sm mb-1">Suallar</div>
-              <div className="text-2xl font-bold text-white">15</div>
+              <div className="text-white/60 text-xs mb-1">Düz / Səhv</div>
+              <div className="text-xl font-bold text-white">
+                <span className="text-green-400">{result?.rightAnswersCount ?? 0}</span>
+                <span className="text-white/40 mx-1">/</span>
+                <span className="text-red-400">{result?.wrongAnswersCount ?? 0}</span>
+              </div>
+            </div>
+            <div className="glass rounded-2xl p-4">
+              <div className="text-white/60 text-xs mb-1">Qalan vaxt</div>
+              <div className="text-xl font-bold text-white">{result?.totalRemainingSeconds ?? 0}s</div>
+            </div>
+            <div className="glass rounded-2xl p-4">
+              <div className="text-white/60 text-xs mb-1">Suallar</div>
+              <div className="text-xl font-bold text-white">
+                {(result?.rightAnswersCount ?? 0) + (result?.wrongAnswersCount ?? 0)}
+              </div>
             </div>
           </motion.div>
 
@@ -151,21 +163,14 @@ export function ParticipantResults() {
             transition={{ delay: 0.8 }}
             className="space-y-4"
           >
-            <div className="flex items-center justify-center gap-3 text-white/80">
-              <span>Liderlər lövhəsinə yönləndirilir:</span>
-              <span className="inline-flex items-center justify-center w-10 h-10 glass-strong rounded-xl text-[#0066b2] font-bold">
-                {countdown}
-              </span>
-            </div>
-
             <motion.button
               onClick={() => navigate("/leaderboard")}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full py-4 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-300"
+              className="w-full py-4 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-2xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-300 group"
             >
-              Liderlər lövhəsinə bax
-              <ArrowRight className="w-5 h-5" />
+              Liderlər lövhəsinə bax ({countdown}s)
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </motion.button>
           </motion.div>
         </div>

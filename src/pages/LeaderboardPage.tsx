@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Trophy, Medal, Award, Zap, Users, Clock } from "lucide-react";
+import { Trophy, Medal, Award, Gauge, Users, Clock } from "lucide-react";
 const exampleImage = "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&q=80&w=200&h=200";
 import api from "../api/axios";
 import { QuizResultDto } from "../types";
@@ -222,7 +222,7 @@ export function Leaderboard() {
                   transition={{ duration: 2, repeat: Infinity }}
                   className="mt-4 px-4 py-2 bg-yellow-400/20 rounded-full text-yellow-400 font-semibold"
                 >
-                  <Zap className="w-4 h-4 inline mr-1" />
+                  <Gauge className="w-4 h-4 inline mr-1" />
                   Çempion
                 </motion.div>
               </div>

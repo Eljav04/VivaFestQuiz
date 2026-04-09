@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { Zap, Trophy } from "lucide-react";
+import { Gauge, Trophy } from "lucide-react";
 import { CarDecoration } from "../../components/CarDecoration";
 import { useQuizStore } from "../../store/useQuizStore";
 import mainBg from "../../assets/main_bg.jpeg";
+import { WelcomeInstructions } from "../../components/WelcomeInstructions";
 
 export function ParticipantEntry() {
   const [name, setName] = useState("");
@@ -23,6 +24,7 @@ export function ParticipantEntry() {
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
+      <WelcomeInstructions />
       <CarDecoration />
       {/* Background Image with Overlay */}
       <div
@@ -77,13 +79,13 @@ export function ParticipantEntry() {
           className="text-center mb-8"
         >
           <div className="inline-flex items-center justify-center w-20 h-20 glass rounded-3xl mb-6">
-            <Zap className="w-10 h-10 text-[#0066b2]" />
+            <Gauge className="w-10 h-10 text-[#0066b2]" />
           </div>
           <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-white via-[#66b3ff] to-white bg-clip-text text-transparent">
             VIVA FEST
           </h1>
           <p className="text-xl text-[#66b3ff] mb-2">2026</p>
-          <p className="text-white/80">BMW Avtomobil Viktorinası</p>
+          <p className="text-white/80">Avtomobil viktorinası</p>
         </motion.div>
 
         {/* Entry Card */}
@@ -95,7 +97,7 @@ export function ParticipantEntry() {
         >
           <form onSubmit={handleJoin} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-white/90 mb-3 text-lg">
+              <label htmlFor="name" className="block text-white/80 mb-1 ml-1 text-lg">
                 Adınızı daxil edin
               </label>
               <input
@@ -103,7 +105,7 @@ export function ParticipantEntry() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Adınız buraya..."
+                placeholder="Adınız Soyadınız"
                 className="w-full px-6 py-4 glass rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#0066b2] transition-all duration-300"
                 required
               />
@@ -116,19 +118,11 @@ export function ParticipantEntry() {
               className="w-full py-5 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-[#0066b2]/50 transition-all duration-300 flex items-center justify-center gap-3"
             >
               <Trophy className="w-5 h-5" />
-              Viktorinaya Qoşul
+              Viktorinaya başla
             </motion.button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <div className="flex items-center justify-between text-sm text-white/60">
-              <span>15 Sual</span>
-              <span className="w-1 h-1 bg-white/60 rounded-full" />
-              <span>Hər sual üçün 30 saniyə</span>
-              <span className="w-1 h-1 bg-white/60 rounded-full" />
-              <span>Canlı Liderlər lövhəsi</span>
-            </div>
-          </div>
+
         </motion.div>
 
         {/* Footer Info */}
@@ -136,9 +130,17 @@ export function ParticipantEntry() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          className="text-center mt-6 text-white/50 text-sm"
+          className="text-center mt-6 text-white/70 text-lg"
         >
-          VIVA Autoservis • BMW Klubu tərəfindən təmin edilib
+          VIVA Autoservis • BMW Club
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="text-center mt-2 text-white/70 text-lg"
+        >
+          tərəfindən hazırlanıb
         </motion.div>
       </motion.div>
     </div>
