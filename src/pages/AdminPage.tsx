@@ -10,7 +10,9 @@ import {
   Eye,
   BarChart3,
   Users,
+  Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
 import api from "../api/axios";
 import { QuestionDto, QuizResultDto } from "../types";
 import {
@@ -46,6 +48,9 @@ export function AdminPanel() {
     participants: 0,
     avgScore: 0,
   });
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
 
   // Load questions and stats
   const fetchData = async () => {
@@ -103,6 +108,7 @@ export function AdminPanel() {
   };
 
   const handleSave = async () => {
+    setIsSaving(true);
     try {
       const dto: QuestionDto = {
         id: editedQuestion.id,
@@ -132,11 +138,13 @@ export function AdminPanel() {
         );
         setQuestions(updatedQuestions);
       }
-      alert("Sual uğurla yadda saxlanıldı!");
+      toast.success("Sual uğurla yadda saxlanıldı!");
       fetchData(); // reload
     } catch (e) {
       console.error(e);
-      alert("Sualı yadda saxlamaq mümkün olmadı.");
+      toast.error("Sualı yadda saxlamaq mümkün olmadı.");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -160,29 +168,34 @@ export function AdminPanel() {
       return;
     }
     
-    if (confirm("Bu sualı silmək istədiyinizə əminsiniz?")) {
-      try {
-        await api.delete(`/api/quiz/admin/questions/${id}`);
-        const filtered = questions.filter((q) => q.id !== id);
-        setQuestions(filtered);
-        if (selectedQuestion === id) {
-          setSelectedQuestion(filtered[0]?.id || null);
-        }
-      } catch (e) {
-        console.error(e);
-        alert("Sualı silmək mümkün olmadı.");
+    setIsDeleting(true);
+    try {
+      await api.delete(`/api/quiz/admin/questions/${id}`);
+      const filtered = questions.filter((q) => q.id !== id);
+      setQuestions(filtered);
+      if (selectedQuestion === id) {
+        setSelectedQuestion(filtered[0]?.id || null);
       }
+      toast.success("Sual uğurla silindi.");
+    } catch (e) {
+      console.error(e);
+      toast.error("Sualı silmək mümkün olmadı.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const handleClearLeaderboard = async () => {
+    setIsResetting(true);
     try {
       await api.delete("/api/quiz/admin/results/reset");
       setStats({ participants: 0, avgScore: 0 });
-      alert("Liderlər lövhəsi uğurla təmizləndi!");
+      toast.success("Liderlər lövhəsi uğurla təmizləndi!");
     } catch (e) {
       console.error(e);
-      alert("Liderlər lövhəsini təmizləmək mümkün olmadı.");
+      toast.error("Liderlər lövhəsini təmizləmək mümkün olmadı.");
+    } finally {
+      setIsResetting(false);
     }
   };
 
@@ -320,12 +333,32 @@ export function AdminPanel() {
             <div className="glass-strong rounded-2xl p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-white">Sualı Redaktə Et</h2>
-                <button
-                  onClick={() => handleDeleteQuestion(editedQuestion.id)}
-                  className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-red-400"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      disabled={isDeleting}
+                      className="p-2 bg-red-500/20 hover:bg-red-500/30 rounded-xl transition-all text-red-400 disabled:opacity-50"
+                    >
+                      {isDeleting ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-5 h-5" />
+                      )}
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Bu sualı silmək istədiyinizə əminsiniz?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Bu hərəkət geri qaytarıla bilməz. Bu, sualı qalıcı olaraq siləcək.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>İmtina et</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDeleteQuestion(editedQuestion.id)}>Davam et</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
 
               <div className="space-y-6">
@@ -390,19 +423,31 @@ export function AdminPanel() {
                 {/* Save Button */}
                 <motion.button
                   onClick={handleSave}
+                  disabled={isSaving}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-4 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all"
+                  className="w-full py-4 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <Save className="w-5 h-5" />
-                  Dəyişiklikləri Yadda Saxla
+                  {isSaving ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Save className="w-5 h-5" />
+                  )}
+                  {isSaving ? "Yadda saxlanılır..." : "Dəyişiklikləri Yadda Saxla"}
                 </motion.button>
 
                 {/* Clear Leaderboard WITH ALERT DIALOG */}
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button className="w-full py-3 glass hover:bg-red-500/20 text-red-400 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border border-red-500/20">
-                      <Trash2 className="w-5 h-5" />
+                    <button 
+                      disabled={isResetting}
+                      className="w-full py-3 glass hover:bg-red-500/20 text-red-400 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border border-red-500/20 disabled:opacity-50"
+                    >
+                      {isResetting ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-5 h-5" />
+                      )}
                       Liderlər lövhəsini sıfırla
                     </button>
                   </AlertDialogTrigger>
