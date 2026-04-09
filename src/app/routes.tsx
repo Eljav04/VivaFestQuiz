@@ -5,14 +5,13 @@ import { ParticipantResults } from "../pages/quiz/ParticipantResultsPage";
 import { Leaderboard } from "../pages/LeaderboardPage";
 import { AdminPanel } from "../pages/AdminPage";
 import { Navigation } from "../components/Navigation";
-import { WelcomeInstructions } from "../pages/quiz/WelcomeInstructionsPage";
+
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {children}
       <Navigation />
-      <WelcomeInstructions />
     </>
   );
 }
