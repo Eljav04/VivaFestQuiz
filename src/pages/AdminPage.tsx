@@ -76,7 +76,7 @@ export function AdminPanel() {
       const avgScore = leaderboard.length > 0
         ? Math.round(leaderboard.reduce((sum, entry) => sum + entry.points, 0) / leaderboard.length)
         : 0;
-      
+
       setStats({
         participants: leaderboard.length,
         avgScore,
@@ -177,7 +177,7 @@ export function AdminPanel() {
       setSelectedQuestion(filtered[0]?.id || null);
       return;
     }
-    
+
     setIsDeleting(true);
     try {
       await api.delete(`/api/quiz/admin/questions/${id}`);
@@ -230,6 +230,34 @@ export function AdminPanel() {
             </div>
 
             <div className="flex gap-4">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    disabled={isResetting}
+                    className="glass px-6 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all flex items-center gap-2 border border-red-500/20 disabled:opacity-50"
+                  >
+                    {isResetting ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-5 h-5" />
+                    )}
+                    Liderlər lövhəsini sıfırla
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Tamamilə əminsiniz?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Bu hərəkət geri qaytarıla bilməz. Bu, liderlər lövhəsinin vəziyyətini qalıcı olaraq siləcək və bütün iştirakçı reytinqlərini serverlərdən təmizləyəcək.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>İmtina et</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleClearLeaderboard}>Davam et</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+
               <a
                 href="/leaderboard"
                 target="_blank"
@@ -238,6 +266,7 @@ export function AdminPanel() {
                 <Eye className="w-5 h-5" />
                 Liderlər lövhəsinə bax
               </a>
+
             </div>
           </div>
         </motion.div>
@@ -315,10 +344,9 @@ export function AdminPanel() {
                     whileTap={{ scale: 0.98 }}
                     className={`
                       w-full text-left p-4 rounded-xl transition-all
-                      ${
-                        selectedQuestion === q.id
-                          ? "bg-[#0066b2]/30 border border-[#0066b2]"
-                          : "glass hover:bg-white/10"
+                      ${selectedQuestion === q.id
+                        ? "bg-[#0066b2]/30 border border-[#0066b2]"
+                        : "glass hover:bg-white/10"
                       }
                     `}
                   >
@@ -453,34 +481,7 @@ export function AdminPanel() {
                   {isSaving ? "Yadda saxlanılır..." : "Dəyişiklikləri Yadda Saxla"}
                 </motion.button>
 
-                {/* Clear Leaderboard WITH ALERT DIALOG */}
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <button 
-                      disabled={isResetting}
-                      className="w-full py-3 glass hover:bg-red-500/20 text-red-400 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border border-red-500/20 disabled:opacity-50"
-                    >
-                      {isResetting ? (
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-5 h-5" />
-                      )}
-                      Liderlər lövhəsini sıfırla
-                    </button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Tamamilə əminsiniz?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Bu hərəkət geri qaytarıla bilməz. Bu, liderlər lövhəsinin vəziyyətini qalıcı olaraq siləcək və bütün iştirakçı reytinqlərini serverlərdən təmizləyəcək.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>İmtina et</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleClearLeaderboard}>Davam et</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+
 
               </div>
             </div>
