@@ -33,7 +33,7 @@ export function WelcomeInstructions() {
 
   return (
     <Dialog open={isVisible} onOpenChange={(open) => { if (!open) handleClose(); }}>
-      <DialogContent 
+      <DialogContent
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
         className="sm:max-w-xl w-[95vw] max-h-[85vh] flex flex-col p-0 glass-strong border border-white/10 text-white gap-0 overflow-hidden outline-none bg-[#0a1628]/95 [&>button]:hidden"
@@ -44,7 +44,7 @@ export function WelcomeInstructions() {
               <Info className="w-8 h-8 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
+              <h2 className="text-2xl md:text-3xl font-bold white bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
                 Qaydalara diqqət!
               </h2>
               <p className="text-[#66b3ff] font-medium mt-1">Avtomobil viktorinası təlimatı</p>
