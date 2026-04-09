@@ -3,7 +3,7 @@ import { Home, PlayCircle, Trophy, Settings } from "lucide-react";
 
 export function Navigation() {
   const location = useLocation();
-  
+
   const links = [
     { path: "/", icon: Home, label: "Giriş" },
     { path: "/quiz", icon: PlayCircle, label: "Viktorina" },
@@ -12,7 +12,7 @@ export function Navigation() {
   ];
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div className="fixed hidden bottom-6 left-1/2 -translate-x-1/2 z-50">
       <div className="glass-strong px-6 py-3 rounded-full flex items-center gap-2">
         {links.map(({ path, icon: Icon, label }) => (
           <Link
@@ -20,10 +20,9 @@ export function Navigation() {
             to={path}
             className={`
               px-4 py-2 rounded-full transition-all flex items-center gap-2
-              ${
-                location.pathname === path
-                  ? "bg-[#0066b2] text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/10"
+              ${location.pathname === path
+                ? "bg-[#0066b2] text-white"
+                : "text-white/60 hover:text-white hover:bg-white/10"
               }
             `}
           >
