@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Trophy, Medal, Zap, Users, Clock, Timer, QrCode as QrIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { Trophy, Medal, Zap, Users, Clock, Timer } from "lucide-react";
+import { QrModal } from "../components/QrModal";
 import bgImage from "../assets/leaderboard_bg.png";
 import api from "../api/axios";
 import { QuizResultDto } from "../types";
@@ -14,6 +15,7 @@ export function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [questionsCount, setQuestionsCount] = useState(0);
+  const [isQrOpen, setIsQrOpen] = useState(false);
 
   useEffect(() => {
     let currentQCount = 0;
@@ -153,14 +155,23 @@ export function Leaderboard() {
                   </div>
                 </div>
               </div>
-              <div className="glass-strong px-6 py-4 rounded-2xl flex items-center gap-3">
-                <Users className="w-6 h-6 text-[#66b3ff]" />
-                <div className="text-right">
-                  <div className="text-white/60 text-sm">İştirakçılar</div>
-                  <div className="text-white font-bold text-xl">
-                    {leaderboard.length}
+              <div className="flex flex-col gap-2">
+                <div className="glass-strong px-6 py-4 rounded-2xl flex items-center justify-between gap-3">
+                  <Users className="w-6 h-6 text-[#66b3ff]" />
+                  <div className="text-right">
+                    <div className="text-white/60 text-sm">İştirakçılar</div>
+                    <div className="text-white font-bold text-xl">
+                      {leaderboard.length}
+                    </div>
                   </div>
                 </div>
+                <button
+                  onClick={() => setIsQrOpen(true)}
+                  className="w-full glass p-3 py-4 rounded-2xl flex items-center justify-center gap-2 text-white font-bold hover:bg-white/10 transition-colors uppercase text-sm tracking-wider border border-white/10"
+                >
+                  <QrIcon className="w-6 h-6 text-[#66b3ff]" />
+                  QR Göstər
+                </button>
               </div>
             </div>
           </div>
@@ -409,6 +420,8 @@ export function Leaderboard() {
           </div>
         )}
       </div>
+
+      <QrModal isOpen={isQrOpen} onClose={() => setIsQrOpen(false)} />
     </div>
   );
 }
