@@ -14,6 +14,7 @@ export function ParticipantQuiz() {
   const [selectedAnswerId, setSelectedAnswerId] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(config.quiz_timer_seconds);
   const [loading, setLoading] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const { participantName, addAnswer, answers, totalRemainingSeconds } = useQuizStore();
 
@@ -52,14 +53,21 @@ export function ParticipantQuiz() {
   const handleAnswerSelect = (answerId: number) => {
     if (selectedAnswerId === null) {
       setSelectedAnswerId(answerId);
+      // Auto-proceed after a short delay to show selection
+      setTimeout(() => {
+        handleNext(answerId);
+      }, 600);
     }
   };
 
-  const handleNext = async () => {
+  const handleNext = async (providedAnswerId?: number) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+
     const question = questions[currentQuestion];
     
     // Fallback answerId if none selected when time ran out
-    const answeredId = selectedAnswerId ?? 0;
+    const answeredId = providedAnswerId ?? selectedAnswerId ?? 0;
     
     // Save to Zustand
     addAnswer(question.id, answeredId, timeLeft);
@@ -68,6 +76,7 @@ export function ParticipantQuiz() {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswerId(null);
       setTimeLeft(config.quiz_timer_seconds);
+      setIsTransitioning(false);
     } else {
       // It was the last question, submit
       try {
@@ -218,18 +227,7 @@ export function ParticipantQuiz() {
               ))}
             </div>
 
-            {/* Next Button */}
-            {selectedAnswerId !== null && (
-               <motion.button
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 onClick={handleNext}
-                 className="glass-strong rounded-2xl py-5 px-8 text-white font-semibold text-lg flex items-center justify-center gap-3 hover:bg-white/20 transition-all duration-300"
-               >
-                 {currentQuestion < questions.length - 1 ? "Növbəti Sual" : "Viktorinanı Bitir"}
-                 <ChevronRight className="w-5 h-5" />
-               </motion.button>
-            )}
+
           </motion.div>
         </AnimatePresence>
       </div>

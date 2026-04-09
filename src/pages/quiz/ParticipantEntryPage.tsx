@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { Zap, Trophy } from "lucide-react";
 import { CarDecoration } from "../../components/CarDecoration";
 import { useQuizStore } from "../../store/useQuizStore";
+import mainBg from "../../assets/main_bg.jpeg";
 
 export function ParticipantEntry() {
   const [name, setName] = useState("");
@@ -24,10 +25,10 @@ export function ParticipantEntry() {
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
       <CarDecoration />
       {/* Background Image with Overlay */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1630394781361-cce39e409555?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxCTVclMjBjYXIlMjBsdXh1cnklMjBhdXRvbW90aXZlfGVufDF8fHx8MTc3NTY1OTExMHww&ixlib=rb-4.1.0&q=80&w=1080')`,
+          backgroundImage: `url(${mainBg})`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#0a1628]/95 via-[#0a1628]/90 to-[#0066b2]/80" />
