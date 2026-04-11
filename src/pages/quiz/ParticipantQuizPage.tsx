@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Clock, ChevronRight } from "lucide-react";
@@ -15,6 +15,7 @@ export function ParticipantQuiz() {
   const [timeLeft, setTimeLeft] = useState(config.quiz_timer_seconds);
   const [loading, setLoading] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const isTransitioningRef = useRef(false);
 
   const { participantName, addAnswer, answers, totalRemainingSeconds } = useQuizStore();
 
@@ -46,9 +47,11 @@ export function ParticipantQuiz() {
       return () => clearTimeout(timer);
     } else {
       // Auto-submit when time runs out
-      handleNext();
+      if (!isTransitioningRef.current && selectedAnswerId === null) {
+        handleNext();
+      }
     }
-  }, [timeLeft, loading, questions]);
+  }, [timeLeft, loading, questions, selectedAnswerId]);
 
   const handleAnswerSelect = (answerId: number) => {
     if (selectedAnswerId === null) {
@@ -61,7 +64,8 @@ export function ParticipantQuiz() {
   };
 
   const handleNext = async (providedAnswerId?: number) => {
-    if (isTransitioning) return;
+    if (isTransitioningRef.current) return;
+    isTransitioningRef.current = true;
     setIsTransitioning(true);
 
     const question = questions[currentQuestion];
@@ -77,6 +81,7 @@ export function ParticipantQuiz() {
       setSelectedAnswerId(null);
       setTimeLeft(config.quiz_timer_seconds);
       setIsTransitioning(false);
+      isTransitioningRef.current = false;
     } else {
       // It was the last question, submit
       try {
