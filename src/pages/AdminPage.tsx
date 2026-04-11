@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import config from "../../quiz_config.json";
 import {
   Plus,
   Trash2,
@@ -40,6 +42,16 @@ interface LocalQuestion {
 }
 
 export function AdminPanel() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const pass = searchParams.get("pass");
+    if (pass !== config.admin_password) {
+      navigate("/");
+    }
+  }, [navigate, searchParams]);
+
   const [questions, setQuestions] = useState<LocalQuestion[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [editedQuestion, setEditedQuestion] = useState<LocalQuestion>({
