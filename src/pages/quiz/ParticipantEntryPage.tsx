@@ -1,21 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { Gauge, Trophy } from "lucide-react";
+import { Gauge, Trophy, AlertCircle } from "lucide-react";
 import { CarDecoration } from "../../components/CarDecoration";
 import { useQuizStore } from "../../store/useQuizStore";
 import mainBg from "../../assets/main_bg.jpeg";
 import { WelcomeInstructions } from "../../components/WelcomeInstructions";
+import api from "../../api/axios";
+import { Alert, AlertTitle, AlertDescription } from "../../components/ui/alert";
 
 export function ParticipantEntry() {
   const [name, setName] = useState("");
+  const [isActive, setIsActive] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const setParticipantName = useQuizStore((state) => state.setParticipantName);
   const resetQuizState = useQuizStore((state) => state.resetQuizState);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkActivity = async () => {
+      try {
+        const res = await api.get("/api/quiz/check_activity");
+        setIsActive(res.data === true || res.data === "true");
+      } catch (error) {
+        console.error("Activity check failed", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkActivity();
+  }, []);
+
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim()) {
+    if (name.trim() && isActive) {
       resetQuizState();
       setParticipantName(name);
       navigate("/quiz");
@@ -113,14 +131,37 @@ export function ParticipantEntry() {
 
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-5 bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white rounded-2xl font-semibold text-lg shadow-lg hover:shadow-[#0066b2]/50 transition-all duration-300 flex items-center justify-center gap-3"
+              disabled={!isActive || isLoading}
+              whileHover={isActive ? { scale: 1.02 } : {}}
+              whileTap={isActive ? { scale: 0.98 } : {}}
+              className={`
+                w-full py-5 rounded-2xl font-semibold text-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-3
+                ${isActive
+                  ? "bg-gradient-to-r from-[#0066b2] to-[#1c8cdc] text-white hover:shadow-[#0066b2]/50"
+                  : "bg-slate-800 text-white/40 cursor-not-allowed border border-white/5"
+                }
+              `}
             >
-              <Trophy className="w-5 h-5" />
-              Viktorinaya başla
+              <Trophy className={`w-5 h-5 ${!isActive ? "opacity-20" : ""}`} />
+              {isActive ? "Viktorinaya başla" : "Viktorina aktiv deyil"}
             </motion.button>
           </form>
+
+          {!isActive && !isLoading && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6"
+            >
+              <Alert variant="destructive" className="bg-red-500/10 border-red-500/20 text-red-200 rounded-2xl py-4">
+                <AlertCircle className="h-5 w-5 text-red-400" />
+                <AlertTitle className="font-bold text-base mb-1">Diqqət!</AlertTitle>
+                <AlertDescription className="text-red-200/80">
+                  Viktorina hazırda deaktivdir
+                </AlertDescription>
+              </Alert>
+            </motion.div>
+          )}
 
 
         </motion.div>

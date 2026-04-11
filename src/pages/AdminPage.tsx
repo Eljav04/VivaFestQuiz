@@ -13,6 +13,7 @@ import {
   Loader2,
   CloudOff,
   AlertCircle,
+  Activity,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../api/axios";
@@ -55,6 +56,8 @@ export function AdminPanel() {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [isActivityLoading, setIsActivityLoading] = useState(false);
+  const [isQuizActive, setIsQuizActive] = useState(true);
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(() => {
     const saved = localStorage.getItem("leaderboardAutoUpdate");
     return saved ? JSON.parse(saved) : false;
@@ -70,9 +73,28 @@ export function AdminPanel() {
     }
   };
 
+  const handleToggleActivity = async () => {
+    setIsActivityLoading(true);
+    try {
+      await api.post("/api/Quiz/admin/quiz/toggle_activity");
+      const res = await api.get("/api/quiz/check_activity");
+      setIsQuizActive(res.data === true || res.data === "true");
+      toast.success(`Viktorina ${!isQuizActive ? "aktivləşdirildi" : "deaktiv edildi"}`);
+    } catch (e) {
+      console.error(e);
+      toast.error("Statusu dəyişmək mümkün olmadı");
+    } finally {
+      setIsActivityLoading(false);
+    }
+  };
+
   // Load questions and stats
   const fetchData = async () => {
     try {
+      // Fetch Activity Status
+      const activityRes = await api.get("/api/quiz/check_activity");
+      setIsQuizActive(activityRes.data === true || activityRes.data === "true");
+
       // Fetch Questions
       const questionsRes = await api.get<QuestionDto[]>("/api/quiz/admin/questions");
       const localQuestions = questionsRes.data.map(q => ({
@@ -265,26 +287,44 @@ export function AdminPanel() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white">Admin Paneli</h1>
-                <p className="text-white/60">VIVA FEST 2026 Viktorina İdarəetməsi</p>
+
               </div>
             </div>
 
-            <div className="flex gap-4 items-center"
+            <div className="flex gap-4 items-center">
+              <div className="flex items-center space-x-4 bg-white/5 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    id="auto-update"
+                    checked={autoUpdateEnabled}
+                    onCheckedChange={handleToggleAutoUpdate}
+                    className="data-[state=unchecked]:bg-slate-500 data-[state=checked]:bg-[#1c8cdc] border-white/20 shadow-inner scale-110"
+                  />
+                  <Label
+                    htmlFor="auto-update"
+                    className="text-white cursor-pointer select-none font-bold text-[10px] uppercase tracking-wide opacity-90"
+                  >
+                    Auto-Yenilənmə
+                  </Label>
+                </div>
 
-            >
-              <div className="flex items-center space-x-4 bg-white/5 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 hover:bg-white/10 transition-all mr-2">
-                <Switch
-                  id="auto-update"
-                  checked={autoUpdateEnabled}
-                  onCheckedChange={handleToggleAutoUpdate}
-                  className="data-[state=unchecked]:bg-slate-500 data-[state=checked]:bg-[#1c8cdc] border-white/20 shadow-inner scale-110"
-                />
-                <Label
-                  htmlFor="auto-update"
-                  className="text-white cursor-pointer select-none font-bold text-sm uppercase tracking-wide opacity-90 hover:opacity-100 transition-opacity"
-                >
-                  Auto-Yenilənmə
-                </Label>
+                <div className="w-[1px] h-8 bg-white/10 mx-2" />
+
+                <div className="flex items-center gap-2">
+                  <Switch
+                    id="quiz-activity"
+                    checked={isQuizActive}
+                    onCheckedChange={handleToggleActivity}
+                    disabled={isActivityLoading}
+                    className="data-[state=unchecked]:bg-red-500/50 data-[state=checked]:bg-green-500 border-white/20 shadow-inner scale-110 disabled:opacity-50"
+                  />
+                  <Label
+                    htmlFor="quiz-activity"
+                    className="text-white cursor-pointer select-none font-bold text-[10px] uppercase tracking-wide opacity-90"
+                  >
+                    {isQuizActive ? "Aktiv" : "Deaktiv"}
+                  </Label>
+                </div>
               </div>
 
               <AlertDialog>
