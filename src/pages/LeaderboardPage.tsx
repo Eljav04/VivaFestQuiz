@@ -67,14 +67,22 @@ export function Leaderboard() {
     };
 
     loadLeaderboard();
-    const interval = setInterval(loadLeaderboard, 5000);
+
+    const savedAutoUpdate = localStorage.getItem("leaderboardAutoUpdate");
+    const isAutoUpdateActive = savedAutoUpdate ? JSON.parse(savedAutoUpdate) : false;
+
+    let interval: ReturnType<typeof setInterval> | undefined;
+
+    if (isAutoUpdateActive) {
+      interval = setInterval(loadLeaderboard, 10000); // 10 seconds interval
+    }
 
     const clockInterval = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
     return () => {
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
       clearInterval(clockInterval);
     };
   }, []);

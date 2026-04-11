@@ -28,6 +28,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
+import { Switch } from "../components/ui/switch";
+import { Label } from "../components/ui/label";
 
 interface LocalQuestion {
   id: number;
@@ -53,6 +55,20 @@ export function AdminPanel() {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(() => {
+    const saved = localStorage.getItem("leaderboardAutoUpdate");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  const handleToggleAutoUpdate = (enabled: boolean) => {
+    setAutoUpdateEnabled(enabled);
+    localStorage.setItem("leaderboardAutoUpdate", JSON.stringify(enabled));
+    if (enabled) {
+      toast.success("Liderboard avtomatik yenilənməsi aktiv edildi");
+    } else {
+      toast.info("Liderboard avtomatik yenilənməsi deaktiv edildi");
+    }
+  };
 
   // Load questions and stats
   const fetchData = async () => {
@@ -253,7 +269,24 @@ export function AdminPanel() {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center"
+
+            >
+              <div className="flex items-center space-x-4 bg-white/5 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/10 hover:bg-white/10 transition-all mr-2">
+                <Switch
+                  id="auto-update"
+                  checked={autoUpdateEnabled}
+                  onCheckedChange={handleToggleAutoUpdate}
+                  className="data-[state=unchecked]:bg-slate-500 data-[state=checked]:bg-[#1c8cdc] border-white/20 shadow-inner scale-110"
+                />
+                <Label
+                  htmlFor="auto-update"
+                  className="text-white cursor-pointer select-none font-bold text-sm uppercase tracking-wide opacity-90 hover:opacity-100 transition-opacity"
+                >
+                  Auto-Yenilənmə
+                </Label>
+              </div>
+
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button
