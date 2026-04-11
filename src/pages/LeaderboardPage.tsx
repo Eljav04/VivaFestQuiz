@@ -352,6 +352,8 @@ export function Leaderboard() {
               {leaderboard.slice(3).map((entry, index) => {
                 const actualRank = index + 4;
                 const isFastest = isFastestPlayer(entry.id);
+                const isHonorable = actualRank === 4 || actualRank === 5;
+                const isAfterTop5 = actualRank === 6;
 
                 return (
                   <motion.div
@@ -360,42 +362,47 @@ export function Leaderboard() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 + index * 0.05 }}
                     className={`
-                      glass-hover rounded-2xl p-6 transition-all duration-300
-                      ${isFastest
-                        ? 'border border-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)] bg-green-500/5'
+                      glass-hover rounded-2xl p-6 transition-all duration-300 relative
+                      ${isHonorable
+                        ? 'border border-[#66b3ff]/30 bg-[#66b3ff]/5 shadow-[0_0_15px_rgba(102,179,255,0.15)]'
                         : ''
                       }
+                      ${isAfterTop5 ? 'mt-8' : ''}
                     `}
                   >
+                    {/* Fastest Time Badge for Table Rows */}
+                    {isFastest && (
+                      <div className="absolute top-2 right-4 bg-green-500/20 border border-green-500/50 rounded-full px-2 py-0.5 flex items-center gap-1 shadow-[0_0_10px_rgba(34,197,94,0.2)]">
+                        <Zap className="w-3 h-3 text-green-400" />
+                        <span className="text-green-400 text-[10px] font-semibold uppercase tracking-wider">Ən sürətli vaxt</span>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-12 gap-4 items-center">
                       <div className="col-span-2">
-                        <span className="text-2xl font-bold text-white/60">
+                        <span className={`text-2xl font-bold ${isHonorable ? 'text-[#66b3ff]' : 'text-white/60'}`}>
                           {String(actualRank).padStart(2, '0')}
                         </span>
                       </div>
 
                       <div className="col-span-5">
                         <div className="flex items-center gap-3">
-                          <div className="text-xl font-bold text-white">
+                          <div className={`text-xl font-bold ${isHonorable ? 'text-white' : 'text-white'}`}>
                             {entry.name}
                           </div>
                         </div>
                       </div>
 
                       <div className="col-span-3 flex items-center gap-2">
-                        {isFastest ? (
-                          <Zap className="w-5 h-5 text-green-400" />
-                        ) : (
-                          <Timer className="w-5 h-5 text-[#66b3ff]" />
-                        )}
-                        <div className={isFastest ? 'text-green-400' : 'text-white/80'}>
+                        <Timer className={`w-5 h-5 ${isHonorable ? 'text-[#66b3ff]' : 'text-[#66b3ff]/60'}`} />
+                        <div className="text-white/80">
                           <span className="font-semibold">Vaxt: </span>
                           <span className="font-bold">{entry.completeTime}s</span>
                         </div>
                       </div>
 
                       <div className="col-span-2 text-right">
-                        <div className="text-3xl font-bold bg-gradient-to-r from-[#0066b2] to-[#66b3ff] bg-clip-text text-transparent">
+                        <div className={`text-3xl font-bold bg-gradient-to-r ${isHonorable ? 'from-[#66b3ff] to-white' : 'from-white/40 to-white/60'} bg-clip-text text-transparent`}>
                           {entry.points}
                         </div>
                       </div>
