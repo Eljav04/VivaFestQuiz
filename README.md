@@ -1,4 +1,9 @@
-# VivaFestQuiz
+Сделал. Теперь скриншоты будут идти один за другим, занимая всю ширину страницы в GitHub, что позволит лучше рассмотреть детали интерфейса.
+
+Вот обновленный текст для твоего файла `README.md`:
+
+```markdown
+# VIVA FEST 2026 — Quiz & Leaderboard (Frontend)
 
 This repository contains the frontend application for the VIVA FEST 2026 interactive quiz system. The project is designed for high-performance real-time interactions during live events, providing a seamless experience for hundreds of concurrent participants.
 
@@ -23,13 +28,33 @@ The application is built with **React** and **TypeScript**, focusing on a premiu
 The application is optimized for **high-traffic scenarios**. By utilizing lightweight state management and efficient polling strategies, the frontend ensures smooth performance even with a large number of active participants and frequent data updates from the API.
 
 ## 📸 Screenshots
-| Quiz Interface | Live Leaderboard | Admin Panel |
-| :--- | :--- | :--- |
-| ![Quiz Path](./public/quiz_view.png) | ![Leaderboard](./public/leaderboard_view.png) | ![Admin Dashboard](./public/admin_view.png) |
 
+### Participant Quiz Interface
+![Quiz Process](./public/quiz_view.png)
+
+### Live Leaderboard
+![Leaderboard](./public/leaderboard_view.png)
+
+### Admin Dashboard
+![Admin Panel](./public/admin_view.png)
+
+*(Note: Replace placeholders with actual files in the `/screenshots` folder)*
 
 ## 🛠 Getting Started
 
 1. **Install dependencies:**
    ```bash
    npm install
+   ```
+
+2. **Configure environment:**
+   Create a `.env` file and set your backend URL:
+   ```env
+   VITE_API_BASE_URL=your_api_endpoint
+   ```
+
+3. **Run the project:**
+   ```bash
+   npm run dev
+   ```
+```
