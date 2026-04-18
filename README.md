@@ -1,8 +1,3 @@
-Сделал. Теперь скриншоты будут идти один за другим, занимая всю ширину страницы в GitHub, что позволит лучше рассмотреть детали интерфейса.
-
-Вот обновленный текст для твоего файла `README.md`:
-
-```markdown
 # VIVA FEST 2026 — Quiz & Leaderboard (Frontend)
 
 This repository contains the frontend application for the VIVA FEST 2026 interactive quiz system. The project is designed for high-performance real-time interactions during live events, providing a seamless experience for hundreds of concurrent participants.
